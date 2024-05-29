@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS testdata (
+    flight_date DATE,
+    flight_status VARCHAR(20),
+    departure_airport VARCHAR(60),
+    departure_timezone VARCHAR(60),
+    departure_iata VARCHAR(5),
+    departure_scheduled TIMESTAMP,
+    departure_actual TIMESTAMP,
+    departure_actual_local_tz VARCHAR(6),
+    arrival_airport VARCHAR(60),
+    arrival_timezone VARCHAR(60),
+    arrival_iata VARCHAR(5),
+    arrival_scheduled TIMESTAMP,
+    arrival_estimated TIMESTAMP,
+    arrival_estimated_local_tz VARCHAR(6),
+    airline_name VARCHAR(60),
+    airline_iata VARCHAR(5),
+    flight_number INT,
+    flight_iata VARCHAR(10),
+    flight_duration FLOAT,
+    timestamp_loaded TIMESTAMP
+);
