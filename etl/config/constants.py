@@ -24,9 +24,18 @@ CONSTANTS = \
             'flight_iata'
         ],
         "TRANSFORMATIONS": {
-            'convertTolocalTimezone': ['departure_actual###America/Argentina/Buenos_Aires',
-                                       'arrival_estimated###America/Argentina/Buenos_Aires'],
+            'convertToLocalTimezone': ['departure_actual###departure_timezone',
+                                       'arrival_estimated###arrival_timezone'],
             'replaceCharInColumnDF': ['departure_timezone###/-', 'arrival_timezone###/-'],
-            'calculateFlightDuration': ['departure_actual', 'arrival_estimated']
+            'calculateFlightDuration': ['departure_actual', 'arrival_estimated'],
+            'addLoadedTimestamp': 'now'
+        },
+        "DATABASE_CONFIG": {
+            'dbname': 'testfligoo',
+            'user': 'airflow',
+            'password': 'airflow',
+            'host': 'localhost',
+            'port': 5432,
+            'tname': 'testdata'
         }
     }
