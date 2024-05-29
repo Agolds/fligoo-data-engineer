@@ -24,7 +24,9 @@ CONSTANTS = \
             'flight_iata'
         ],
         "TRANSFORMATIONS": {
-            'convertTolocalTimezone': 'America/Argentina/Buenos_Aires',
-            'replaceCharInColumnDF': ['departure_timezone###/-', 'arrival_timezone###/-']
+            'convertTolocalTimezone': ['departure_actual###America/Argentina/Buenos_Aires',
+                                       'arrival_estimated###America/Argentina/Buenos_Aires'],
+            'replaceCharInColumnDF': ['departure_timezone###/-', 'arrival_timezone###/-'],
+            'calculateFlightDuration': ['departure_actual', 'arrival_estimated']
         }
     }
