@@ -1,4 +1,6 @@
 import pandas as pd
+import datetime
+pd.options.mode.chained_assignment = None
 
 
 def selectColumns(df, columns):
@@ -6,7 +8,7 @@ def selectColumns(df, columns):
     Filters columns in dataframe based parameter columns
     :param df: Pandas series
     :param columns: List of columns
-    :return: Pandas series with filtered columns
+    :return pd.Series: Pandas series with filtered columns
     """
     return df[columns]
 
@@ -17,28 +19,53 @@ def replaceCharInColumnDF(row, char_to_replace, new_char):
     :param row:
     :param char_to_replace:
     :param new_char:
-    :return:
+    :return: Replaced value of column
     """
-    return row.replace(char_to_replace, new_char)
+    try:
+        return row.replace(char_to_replace, new_char)
+    except Exception as e:
+        print(e)
+        return row
 
 
-def convertTolocalTimezone(row, column, timezone):
+def convertToLocalTimezone(row, column, timezone):
     """
-    Each datetime converted into desired timezone
+    Extracts timezone from datetime and converts it in local tz
     :param timezone: desired timezone
     :param row: pandas series, data
     :param column: string, desired timezone
-    :return: datetime column
+    :return String: Timezone vs UTC (positive or negative)
     """
-    return pd.Timestamp(str(row[column]).replace('+00:00', '')).tz_localize(timezone)
+    try:
+        tz_hour = int(pd.Timestamp(str(row[column]).replace('+00:00', '')).tz_localize(row[timezone]).strftime('%z')) / 100
+        return f'+{tz_hour}' if tz_hour > 0 else str(tz_hour)
+    except Exception as e:
+        print(e)
+        return None
 
 
 def calculateFlightDuration(row, departure_col, arrival_col):
     """
-    Gets difference between datetimes
+    Gets difference between date times
     :param row: pandas series, data.
     :param departure_col: Departure column name
     :param arrival_col: Arrival column name
-    :return: string referencing hours
+    :return String: referencing hours
     """
-    return pd.Timedelta(pd.to_datetime(row[departure_col]) - pd.to_datetime(row[arrival_col])).seconds / 3600
+    try:
+        return pd.Timedelta(pd.to_datetime(row[departure_col]) - pd.to_datetime(row[arrival_col])).seconds / 3600
+    except Exception as e:
+        print(e)
+        return None
+
+
+def addLoadedTimestamp():
+    """
+    Returns current date time
+    :return Timestamp: Current timestamp
+    """
+    try:
+        return datetime.datetime.now()
+    except Exception as e:
+        print(e)
+        return None
