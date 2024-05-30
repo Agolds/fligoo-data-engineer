@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 from pandas import json_normalize
+import logging
 
 
 class APIRequests:
@@ -13,6 +14,9 @@ class APIRequests:
         Retrieves data from API in loop based on total records and 100 records limit
         :return pd.Dataframe: API response:
         """
+        # Set up logging
+        logging.basicConfig(level=logging.INFO)
+        logger = logging.getLogger(__name__)
         offset = 0
         total_records = None
         all_data_df = pd.DataFrame()
@@ -20,7 +24,7 @@ class APIRequests:
         while True:
             response = requests.get(self.base_url, filters).json()
             if response.get('error'):
-                print(response)
+                logger.error(response)
                 break
 
             # Returns limitation of API - Default: 100
