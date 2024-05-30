@@ -4,6 +4,9 @@ Pre-Requisites:
 1. Docker
 2. Code editor
 3. Git (to clone repo)
+4. Register in Aviationstack API and replace ACCESS_KEY with your personal access key in the CONSTANTS file.
+  -  http://api.aviationstack.com/
+  -  CONSTANT key: FLIGHTS_API_ACCESS_KEY_FILTERS
 
 Steps:
 1. Run command: 'docker-compose up --build' in terminal. This will turn the container on and build the image.
