@@ -10,7 +10,11 @@ def selectColumns(df, columns):
     :param columns: List of columns
     :return pd.Series: Pandas series with filtered columns
     """
-    return df[columns]
+    try:
+        return df[columns]
+    except Exception as e:
+        print(e)
+        return None
 
 
 def replaceCharInColumnDF(row, char_to_replace, new_char):

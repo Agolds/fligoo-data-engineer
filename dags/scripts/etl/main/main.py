@@ -1,11 +1,15 @@
-from etl.config.constants import CONSTANTS
-from etl.utils.api_requests import APIRequests
-from etl.utils.database import DatabaseConnections
-from etl.utils.transform_data import replaceCharInColumnDF, \
+import logging
+from scripts.etl.config.constants import CONSTANTS
+from scripts.etl.utils.api_requests import APIRequests
+from scripts.etl.utils.database import DatabaseConnections
+from scripts.etl.utils.transform_data import replaceCharInColumnDF, \
     convertToLocalTimezone, selectColumns, calculateFlightDuration, addLoadedTimestamp
 
 
-if __name__ == '__main__':
+def main():
+    # Set up logging
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
     # Constants - App configs
     base_url = CONSTANTS.get("BASE_URL")
     flights_api_filters = CONSTANTS.get("FLIGHTS_API_ACCESS_KEY_FILTERS")
@@ -19,14 +23,14 @@ if __name__ == '__main__':
 
     # Get data from API
     try:
-        # flights_raw_data = api_requests.testAPI()
         flights_raw_data = api_requests.getFlightsData()
         df = selectColumns(flights_raw_data, columns)
     except Exception as e:
-        print(e)
+        logger.error(f"Error retrieving data from API\n{e}")
+        raise
 
     # Execute transformations
-    if transformations:
+    if transformations and df:
         for transformation, values in transformations.items():
             if "convertToLocalTimezone" in transformation:
                 for col in values:
@@ -50,4 +54,8 @@ if __name__ == '__main__':
         # Load data into database
         db_connect.saveDataDB(df)
     else:
-        print("Transformations were not declared. Unable to load data.")
+        logger.error("Transformations were not declared. Unable to load data.")
+
+
+if __name__ == '__main__':
+    main()
