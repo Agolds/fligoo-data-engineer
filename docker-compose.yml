@@ -16,14 +16,25 @@ services:
     depends_on:
       - postgres
     environment:
+      PYTHONPATH: $PYTHONPATH:/opt/airflow/scripts
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/testfligoo
       AIRFLOW__CORE__FERNET_KEY: 'C6JYCxVSBWBjnEx6ObH6Vrp6WE2YBa0bR-9eRxTK-LE='
       AIRFLOW__WEBSERVER__SECRET_KEY: 'LqZ_CY4vucH9tNpMbXtYeZ2T8Msx9K9OxWnYXn1B9_Q='
-      AIRFLOW__CORE__LOAD_EXAMPLES: 'True'
+#      AIRFLOW__CORE__LOAD_EXAMPLES: 'False'
+#      AIRFLOW__SMTP__SMTP_HOST: 'smtp.example.com'
+#      AIRFLOW__SMTP__SMTP_STARTTLS: 'True'
+#      AIRFLOW__SMTP__SMTP_SSL: 'False'
+#      AIRFLOW__SMTP__SMTP_USER: 'alexg7goldstein@hotmail.com'
+#      AIRFLOW__SMTP__SMTP_PASSWORD: ''
+#      AIRFLOW__SMTP__SMTP_PORT: '587'
+#      AIRFLOW__SMTP__SMTP_MAIL_FROM: 'alexg7goldstein@hotmail.com'
+#      SMTP_TO: 'alexgoldstein97@gmail.com'
+      AIRFLOW_VAR_APP_SCRIPT_PATH: '/opt/airflow/scripts/etl/main/main.py'
     volumes:
       - ./dags:/opt/airflow/dags
       - ./scripts:/opt/airflow/scripts
+      - ./logs:/opt/airflow/logs
     ports:
       - "8080:8080"
     command: >
@@ -38,8 +49,11 @@ services:
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/testfligoo
+      AIRFLOW__CORE__FERNET_KEY: 'C6JYCxVSBWBjnEx6ObH6Vrp6WE2YBa0bR-9eRxTK-LE='
+      AIRFLOW__WEBSERVER__SECRET_KEY: 'LqZ_CY4vucH9tNpMbXtYeZ2T8Msx9K9OxWnYXn1B9_Q='
     volumes:
       - ./dags:/opt/airflow/dags
       - ./scripts:/opt/airflow/scripts
+      - ./logs:/opt/airflow/logs
     command: >
       bash -c "airflow scheduler"
